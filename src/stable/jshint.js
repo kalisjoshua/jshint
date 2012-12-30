@@ -868,7 +868,6 @@ var JSHINT = (function () {
 	function nobreaknonadjacent(left, right) {
 		left = left || state.tokens.curr;
 		right = right || state.tokens.next;
-		// if (!state.option.laxbreak && left.line !== right.line) {
 		if (!state.option.laxbreak && left.line !== right.line &&
 		!(state.option.fancyternary && right.value === "?")) {
 			warning("W014", right, right.id);
