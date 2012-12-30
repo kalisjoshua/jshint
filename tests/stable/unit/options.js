@@ -954,6 +954,37 @@ exports.laxbreak = function (test) {
 	test.done();
 };
 
+exports.fancyternary = function (test) {
+    var src = fs.readFileSync(__dirname + '/fixtures/fancyternary.js', 'utf8');
+
+    // default options should point out a problem
+    TestRun(test)
+        .addError(2, "Bad line breaking before '?'.")
+        .test(src);
+
+    // same as above test, just explicitly setting to false
+    TestRun(test)
+        .addError(2, "Bad line breaking before '?'.")
+        .test(src, { fancyternary: false });
+
+    // laxbreak will allow all sortd of evil line-breaks
+    TestRun(test)
+        .test(src, { laxbreak: true });
+
+    // essentially the same as the first testrun
+    TestRun(test)
+        .addError(2, "Bad line breaking before '?'.")
+        .test([ 'var a = b ', '? c : d;' ]);
+
+    TestRun(test)
+        .test([ 'var a = b ', '? c : d;' ], { fancyternary: true });
+
+    TestRun(test)
+        .test([ 'var a = b ', '? c : d;' ], { fancyternary: true, laxbreak: false });
+
+    test.done();
+};
+
 exports.white = function (test) {
 	var src = fs.readFileSync(__dirname + '/fixtures/white.js', 'utf8');
 

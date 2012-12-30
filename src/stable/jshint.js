@@ -84,6 +84,7 @@ var JSHINT = (function () {
 			esnext      : true, // if es.next specific syntax should be allowed
 			evil        : true, // if eval should be allowed
 			expr        : true, // if ExpressionStatement should be allowed as Programs
+			fancyternary: false, // if ternary controls allowed at the beginning of their own line
 			forin       : true, // if for in statements must filter
 			funcscope   : true, // if only function scope should be used for scope tests
 			globalstrict: true, // if global "use strict"; should be allowed (also enables 'strict')
@@ -867,7 +868,9 @@ var JSHINT = (function () {
 	function nobreaknonadjacent(left, right) {
 		left = left || state.tokens.curr;
 		right = right || state.tokens.next;
-		if (!state.option.laxbreak && left.line !== right.line) {
+		// if (!state.option.laxbreak && left.line !== right.line) {
+		if (!state.option.laxbreak && left.line !== right.line &&
+		!(state.option.fancyternary && right.value === "?")) {
 			warning("W014", right, right.id);
 		} else if (state.option.white) {
 			left = left || state.tokens.curr;
